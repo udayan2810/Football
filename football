@@ -1,0 +1,86 @@
+var field = createSprite(200, 200 ,400, 400);
+field.setAnimation("soccer");
+var PLAY = 1;
+var END = 0;
+var gameState = PLAY;
+var ball = createSprite(240,160,30,30);
+ball.setAnimation("ball.png_1");
+var line2 = createSprite(390,200,20,400);
+line2.shapeColor="red";
+var line3 = createSprite(10,200,20,400);
+line3.shapeColor="red";
+var line4 = createSprite(75,2,110,20);
+line4.shapeColor=("red");
+var line5 = createSprite(330,2,110,20);
+line5.shapeColor=("red");
+var hand = createSprite(200,380,40,40);
+hand.setAnimation("video_game_controller_1");
+
+var count = 0;
+textSize(25);
+textStyle(BOLD);
+textFont("Georgia");
+
+
+function draw() {
+background("white");
+var createCanvas = (400,400);
+ball.scale=0.4;
+ if (gameState ===PLAY) {
+   ball.velocityX=2;
+ball.velocityY=4;
+ball.bounciness=40;
+ball.bounceOff(line2);
+ball.bounceOff(line3);
+ball.bounceOff(line4);
+ball.bounceOff(line5);
+ball.bounceOff(hand);
+if(keyDown(RIGHT_ARROW))
+{
+hand.x=hand.x+20;
+}
+if(keyDown(LEFT_ARROW))
+{
+hand.x=hand.x-20;
+}
+hand.collide(line2);
+hand.collide(line3);
+ if ( keyDown("enter") &&gameState === "PLAY") {
+    serve();
+    gameState = "PLAY";
+  }
+
+ } else if(gameState === "END") {
+if(ball.x > 400 || ball.x <0) {
+   if(ball.y>= 0) {
+      count = count + 1;
+    }
+    
+    if(ball.y <= 400) {
+      count = count- 1;
+    }
+reset();
+gameState = "PLAY";
+  }   
+ }
+ 
+console.log(ball.y);
+
+//hand.setCollider("circle",0,0,50);
+//ball.setCollider("circle",-21,-10,0);
+  
+
+drawSprites();
+fill("black");
+text("Score: "+ count, 230, 100);
+}
+function serve() {
+  ball.velocityX = 3;
+  ball.velocityY = 4;
+}      
+function reset() {
+  ball.x = 200;
+  ball.y = 200;
+  ball.velocityX = 0;
+  ball.velocityY = 0;
+}
